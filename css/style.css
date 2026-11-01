@@ -1257,3 +1257,47 @@ svg {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+
+/* FIX: teks terpotong */
+html,
+body {
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4, p, span, a, button {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.hero-title,
+.section-title,
+.about-text,
+.project-card h3,
+.archive-card h3 {
+  height: auto;
+  max-height: none;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+}
+
+.hero-content,
+.hero-visual,
+.about-content,
+.project-card,
+.archive-card {
+  min-width: 0;
+}
+
+@media (max-width: 650px) {
+  .hero-title {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+    line-height: 1.05;
+  }
+
+  p {
+    line-height: 1.7;
+  }
+}
