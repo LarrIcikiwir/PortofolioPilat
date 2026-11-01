@@ -1200,3 +1200,60 @@ button {
     transform: none;
   }
 }
+
+
+/* FIX: horizontal overflow dan ruang kosong kanan */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.container,
+section,
+header,
+footer,
+main {
+  max-width: 100%;
+}
+
+.container {
+  width: min(100% - 40px, 1200px);
+  margin-inline: auto;
+}
+
+img,
+video,
+svg {
+  max-width: 100%;
+}
+
+.hero-layout,
+.hero-visual,
+.hero-content,
+.archive-card,
+.project-grid {
+  min-width: 0;
+}
+
+@media (max-width: 650px) {
+  .container {
+    width: calc(100% - 32px);
+  }
+
+  .hero-layout,
+  .archive-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .project-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
