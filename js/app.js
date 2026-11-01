@@ -3,9 +3,9 @@
    SUPABASE CONFIGURATION
 ================================= */
 
-const SUPABASE_URL = "YOUR_SUPABASE_URL";
-const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
-const OWNER_UID = "YOUR_OWNER_UUID";
+const SUPABASE_URL = "https://mqqgleosncngwmxjjoit.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_mj6sYgtaX9gvgI5I6xCz6g_u2G9MnLH";
+const OWNER_UID = "3be8b6b2-f81b-41e9-b2f1-3d4cba14bf41";
 
 const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
