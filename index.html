@@ -4,323 +4,431 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#111111">
-  <meta name="description" content="Portfolio Pilar Rehan — Developer, RPL Student, and Builder.">
-  <title>Pilar Rehan S.T — Developer Portfolio</title>
+  <meta name="theme-color" content="#101010">
+  <meta name="description" content="Portofolio Pilar Rehan S.T. — Pengembang Web dan Pelajar Rekayasa Perangkat Lunak.">
+
+  <title>Pilar Rehan S.T. — Portofolio</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-  <div class="noise"></div>
 
+  <div class="noise"></div>
+  <div class="page-loader" id="pageLoader">
+    <span>PILAR REHAN S.T.</span>
+    <div class="loader-line"><i></i></div>
+  </div>
+
+  <!-- NAVIGASI -->
   <header class="navbar">
-    <a href="#" class="brand">PILAR<span>.</span></a>
+    <a href="#beranda" class="brand">PILAR<span>.</span></a>
 
     <nav id="navMenu">
-      <a href="#about">About</a>
-      <a href="#journey">Journey</a>
-      <a href="#projects">Projects</a>
-      <a href="#characters">Archive</a>
+      <a href="#tentang">Tentang</a>
+      <a href="#perjalanan">Perjalanan</a>
+      <a href="#proyek">Proyek</a>
+      <a href="#arsip">Arsip</a>
     </nav>
 
-    <button class="owner-btn" id="ownerBtn">OWNER ACCESS ↗</button>
-    <button class="menu-btn" id="menuBtn" aria-label="Toggle navigation">☰</button>
+    <button class="owner-btn" id="ownerBtn">AKSES PEMILIK ↗</button>
+    <button class="menu-btn" id="menuBtn" aria-label="Buka menu">☰</button>
   </header>
 
   <main>
+
     <!-- HERO -->
-    <section class="hero">
+    <section class="hero" id="beranda">
+
       <div class="hero-top mono">
-        <span>PORTFOLIO / 2026</span>
-        <span>INDEPENDENT DEVELOPER</span>
+        <span>PORTOFOLIO / 2026</span>
+        <span>PENGEMBANG INDEPENDEN</span>
       </div>
 
       <div class="hero-layout">
-        <div class="hero-copy">
-          <p class="eyebrow"><span class="status-dot"></span> AVAILABLE FOR CREATIVE PROJECTS</p>
 
-          <h1>BUILDING<br>THINGS THAT<br><span>MAKE SENSE.</span></h1>
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span class="status-dot"></span>
+            SELALU TERBUKA UNTUK IDE BARU
+          </p>
+
+          <h1>
+            MEMBANGUN<br>
+            SESUATU YANG<br>
+            <span>BERMAKNA.</span>
+          </h1>
 
           <p class="hero-description">
-            I'm Pilar Rehan S.T, an aspiring full-stack developer
-            exploring the intersection of technology, logic,
-            and creative problem solving.
+            Saya Pilar Rehan S.T., pelajar Rekayasa
+            Perangkat Lunak yang tertarik pada
+            pengembangan web, teknologi, logika,
+            dan pemecahan masalah.
           </p>
 
           <div class="hero-actions">
-            <a href="#projects" class="primary-btn">EXPLORE PROJECTS ↗</a>
-            <a href="#about" class="text-link">MORE ABOUT ME ↓</a>
+            <a href="#proyek" class="primary-btn">LIHAT PROYEK ↗</a>
+            <a href="#tentang" class="text-link">KENALI SAYA ↓</a>
           </div>
         </div>
 
-        <div class="hero-visual">
-          <img src="assets/hachiman.png" alt="Hikigaya Hachiman editorial artwork">
+        <div class="hero-visual image-box">
+          <img src="assets/hachiman.png" alt="Ilustrasi Hachiman">
           <div class="visual-label">
-            <span>01 / CHARACTER STUDY</span>
-            <span>THE OBSERVER</span>
+            <span>01 / STUDI KARAKTER</span>
+            <span>SANG PENGAMAT</span>
           </div>
           <div class="visual-stamp">比企谷<br>八幡</div>
         </div>
+
       </div>
 
       <div class="hero-bottom mono">
         <span>SMKN 4 KENDARI / RPL</span>
-        <span>DESIGN · CODE · EXPERIMENT</span>
+        <span>DESAIN · KODE · EKSPERIMEN</span>
       </div>
+
     </section>
 
-    <!-- ABOUT -->
-    <section class="section about-section" id="about">
-      <div class="section-heading">
-        <span class="section-index">01 / ABOUT</span>
+    <!-- TENTANG -->
+    <section class="section" id="tentang">
+
+      <div class="section-heading reveal">
+        <span class="section-index">01 / TENTANG</span>
         <span class="section-line"></span>
-        <span class="mono">A LITTLE INTRODUCTION</span>
+        <span class="mono">PERKENALAN SINGKAT</span>
       </div>
 
       <div class="about-layout">
-        <h2>CURIOUS<br>BY <span>DEFAULT.</span></h2>
 
-        <div class="about-copy">
+        <h2 class="reveal">
+          SELALU<br>
+          <span>INGIN TAHU.</span>
+        </h2>
+
+        <div class="about-copy reveal">
           <p>
-            I'm a student at SMKN 4 Kendari, majoring in
-            Software Engineering. I enjoy understanding
-            how things work and turning ideas into
-            functional digital products.
+            Saya merupakan pelajar SMKN 4 Kendari
+            jurusan Rekayasa Perangkat Lunak.
+            Saya senang memahami cara kerja teknologi
+            dan mengubah ide menjadi produk digital.
           </p>
+
           <p>
-            From web development to small experiments
-            with hardware, I learn by building, testing,
-            and improving.
+            Mulai dari pengembangan website hingga
+            eksperimen perangkat keras, saya belajar
+            melalui proses membangun, menguji,
+            dan memperbaiki.
           </p>
 
           <div class="about-signature">
-            <span>— PILAR REHAN S.T</span>
-            <span class="mono">STUDENT / DEVELOPER</span>
+            <span>— PILAR REHAN S.T.</span>
+            <span class="mono">PELAJAR / DEVELOPER</span>
           </div>
         </div>
+
       </div>
 
-      <div class="skills">
-        <span class="mono">TECH STACK /</span>
+      <div class="skills reveal">
+        <span class="mono">TEKNOLOGI YANG DIPELAJARI /</span>
+
         <div class="skill-list">
-          <span>HTML</span><span>CSS</span><span>JavaScript</span>
-          <span>PHP</span><span>MySQL</span><span>Tailwind</span>
-          <span>Supabase</span><span>Git</span><span>ESP32</span>
+          <span>HTML</span>
+          <span>CSS</span>
+          <span>JavaScript</span>
+          <span>PHP</span>
+          <span>MySQL</span>
+          <span>Tailwind</span>
+          <span>Supabase</span>
+          <span>Git</span>
+          <span>ESP32</span>
         </div>
       </div>
+
     </section>
 
-    <!-- JOURNEY -->
-    <section class="section journey-section" id="journey">
-      <div class="section-heading">
-        <span class="section-index">02 / JOURNEY</span>
+    <!-- PERJALANAN -->
+    <section class="section" id="perjalanan">
+
+      <div class="section-heading reveal">
+        <span class="section-index">02 / PERJALANAN</span>
         <span class="section-line"></span>
-        <span class="mono">THE PROCESS</span>
+        <span class="mono">SEBUAH PROSES</span>
       </div>
 
-      <h2 class="journey-title">STILL IN<br><span>PROGRESS.</span></h2>
+      <h2 class="journey-title reveal">
+        MASIH<br>
+        <span>BERKEMBANG.</span>
+      </h2>
 
       <div class="timeline">
-        <article class="timeline-item">
+
+        <article class="timeline-item reveal">
           <span class="timeline-year">2024 — 2025</span>
           <div>
-            <h3>THE BEGINNING</h3>
-            <p>Started exploring programming, logic, and the fundamentals of web development.</p>
+            <h3>AWAL PERJALANAN</h3>
+            <p>
+              Mulai mengenal pemrograman, logika,
+              dan dasar-dasar pengembangan website.
+            </p>
           </div>
-          <span class="timeline-tag">LEARNING</span>
+          <span class="timeline-tag">BELAJAR</span>
         </article>
 
-        <article class="timeline-item">
+        <article class="timeline-item reveal">
           <span class="timeline-year">2025 — 2026</span>
           <div>
-            <h3>BUILDING PROJECTS</h3>
-            <p>Experimenting with JavaScript, databases, interfaces, and application development.</p>
+            <h3>MULAI MEMBANGUN</h3>
+            <p>
+              Bereksperimen dengan JavaScript,
+              database, antarmuka, dan aplikasi.
+            </p>
           </div>
-          <span class="timeline-tag">BUILDING</span>
+          <span class="timeline-tag">MEMBANGUN</span>
         </article>
 
-        <article class="timeline-item">
-          <span class="timeline-year">2026 — NOW</span>
+        <article class="timeline-item reveal">
+          <span class="timeline-year">2026 — SEKARANG</span>
           <div>
-            <h3>EXPANDING THE SYSTEM</h3>
-            <p>Improving full-stack skills and developing more meaningful digital products.</p>
+            <h3>MENGEMBANGKAN KEMAMPUAN</h3>
+            <p>
+              Memperdalam kemampuan full-stack
+              dan mengembangkan produk digital.
+            </p>
           </div>
-          <span class="timeline-tag">GROWING</span>
+          <span class="timeline-tag">BERKEMBANG</span>
         </article>
+
       </div>
     </section>
 
-    <!-- PROJECTS -->
-    <section class="section projects-section" id="projects">
-      <div class="section-heading">
-        <span class="section-index">03 / SELECTED WORK</span>
+    <!-- PROYEK -->
+    <section class="section" id="proyek">
+
+      <div class="section-heading reveal">
+        <span class="section-index">03 / KARYA</span>
         <span class="section-line"></span>
-        <span class="mono">PROJECT ARCHIVE</span>
+        <span class="mono">ARSIP PROYEK</span>
       </div>
 
-      <div class="projects-header">
-        <h2>THINGS I'VE<br><span>BUILT.</span></h2>
-        <p>Experiments, prototypes, and digital products.</p>
+      <div class="projects-header reveal">
+        <h2>YANG TELAH<br><span>DIBANGUN.</span></h2>
+        <p>
+          Kumpulan eksperimen, prototipe,
+          dan produk digital.
+        </p>
       </div>
 
       <div class="project-grid" id="projectGrid">
-        <p class="loading-text">Loading projects...</p>
+        <p class="loading-text">Memuat proyek...</p>
       </div>
+
     </section>
 
-    <!-- CHARACTER ARCHIVE -->
-    <section class="section archive-section" id="characters">
-      <div class="section-heading">
-        <span class="section-index">04 / PERSPECTIVE</span>
+    <!-- ARSIP KARAKTER -->
+    <section class="section" id="arsip">
+
+      <div class="section-heading reveal">
+        <span class="section-index">04 / PERSPEKTIF</span>
         <span class="section-line"></span>
-        <span class="mono">FICTIONAL ARCHIVE</span>
+        <span class="mono">ARSIP KARAKTER FIKSI</span>
       </div>
 
-      <div class="archive-heading">
-        <h2>DIFFERENT<br><span>PERSPECTIVES.</span></h2>
-        <p>Two fictional characters. Two different ways of seeing the world.</p>
+      <div class="archive-heading reveal">
+        <h2>DUA SUDUT<br><span>PANDANG.</span></h2>
+        <p>
+          Dua karakter fiksi dengan cara
+          pandang yang berbeda terhadap dunia.
+        </p>
       </div>
 
-      <article class="archive-card archive-hachiman">
-        <div class="archive-image">
+      <article class="archive-card reveal">
+        <div class="archive-image image-box">
           <img src="assets/hachiman.png" alt="Hikigaya Hachiman">
         </div>
+
         <div class="archive-info">
-          <span class="mono">01 / OREGairu</span>
+          <span class="mono">01 / OREGAIRU</span>
           <h3>HIKIGAYA<br>HACHIMAN.</h3>
           <p>
-            An observer who questions social norms.
-            His perspective challenges the simplicity
-            of ordinary social interactions.
+            Seorang pengamat yang mempertanyakan
+            norma sosial dan melihat dunia
+            melalui sudut pandang realistis.
           </p>
+
           <div class="archive-tags">
-            <span>ANALYTICAL</span>
+            <span>ANALITIS</span>
             <span>INTROVERT</span>
-            <span>REALISTIC</span>
+            <span>REALISTIS</span>
           </div>
+
           <span class="archive-number">01</span>
         </div>
       </article>
 
-      <article class="archive-card archive-dokja">
-        <div class="archive-image">
+      <article class="archive-card archive-dokja reveal">
+        <div class="archive-image image-box">
           <img src="assets/dokja.png" alt="Kim Dokja">
         </div>
+
         <div class="archive-info">
           <span class="mono">02 / OMNISCIENT READER</span>
           <h3>KIM<br>DOKJA.</h3>
           <p>
-            A reader who became part of the story.
-            Knowledge, perspective, and decisions
-            shape the world around him.
+            Seorang pembaca yang menjadi bagian
+            dari cerita. Pengetahuan dan keputusan
+            membentuk perjalanan hidupnya.
           </p>
+
           <div class="archive-tags">
-            <span>STRATEGIST</span>
-            <span>ADAPTIVE</span>
-            <span>RESILIENT</span>
+            <span>STRATEGIS</span>
+            <span>ADAPTIF</span>
+            <span>TANGGUH</span>
           </div>
+
           <span class="archive-number">02</span>
         </div>
       </article>
+
     </section>
 
-    <!-- CONTACT -->
-    <section class="section contact-section" id="contact">
-      <span class="section-index">05 / CONTACT</span>
-      <h2>HAVE AN IDEA?<br><span>LET'S BUILD IT.</span></h2>
-      <p>Open to learning, collaboration, and creative projects.</p>
-      <a class="primary-btn" href="https://github.com/LarrIcikiwir" target="_blank" rel="noopener">GITHUB PROFILE ↗</a>
+    <!-- KONTAK -->
+    <section class="section contact-section" id="kontak">
+
+      <span class="section-index reveal">05 / KONTAK</span>
+
+      <h2 class="reveal">
+        PUNYA IDE?<br>
+        <span>MARI WUJUDKAN.</span>
+      </h2>
+
+      <p class="reveal">
+        Terbuka untuk belajar, berkolaborasi,
+        dan mengembangkan proyek kreatif.
+      </p>
+
+      <a class="primary-btn reveal"
+         href="https://github.com/LarrIcikiwir"
+         target="_blank" rel="noopener">
+        PROFIL GITHUB ↗
+      </a>
+
     </section>
+
   </main>
 
+  <!-- FOOTER -->
   <footer class="footer mono">
-    <span>© 2026 PILAR REHAN</span>
-    <span>DESIGNED & BUILT WITH INTENTION.</span>
-    <a href="#">BACK TO TOP ↑</a>
+    <span>© 2026 PILAR REHAN S.T.</span>
+    <span>DIBUAT DENGAN PENUH PERHATIAN.</span>
+    <a href="#beranda">KEMBALI KE ATAS ↑</a>
   </footer>
 
-  <!-- LOGIN MODAL -->
+  <!-- MODAL LOGIN -->
   <div class="modal-backdrop" id="loginModal">
     <div class="modal">
+
       <button class="modal-close" id="closeLogin">×</button>
-      <span class="mono modal-label">RESTRICTED AREA / OWNER ONLY</span>
-      <h2>WELCOME<br><span>BACK.</span></h2>
+
+      <span class="mono modal-label">AREA TERBATAS / PEMILIK</span>
+
+      <h2>SELAMAT<br><span>DATANG.</span></h2>
 
       <form id="loginForm">
         <label for="loginEmail">EMAIL</label>
-        <input id="loginEmail" type="email" placeholder="Owner email" required>
+        <input id="loginEmail" type="email"
+               placeholder="Email pemilik" required>
 
-        <label for="loginPassword">PASSWORD</label>
-        <input id="loginPassword" type="password" placeholder="Password" required>
+        <label for="loginPassword">KATA SANDI</label>
+        <input id="loginPassword" type="password"
+               placeholder="Kata sandi" required>
 
-        <button class="primary-btn full-btn" type="submit">SIGN IN ↗</button>
+        <button class="primary-btn full-btn" type="submit">
+          MASUK ↗
+        </button>
+
         <p id="loginMessage" class="form-message"></p>
       </form>
+
     </div>
   </div>
 
   <!-- ADMIN PANEL -->
   <div class="admin-backdrop" id="adminPanel">
+
     <div class="admin-window">
+
       <div class="admin-header">
         <div>
-          <span class="mono">CONTROL CENTER / 01</span>
-          <h2>PROJECT MANAGER</h2>
+          <span class="mono">PUSAT KONTROL / 01</span>
+          <h2>PENGELOLA PROYEK</h2>
         </div>
+
         <button id="closeAdmin" class="modal-close">×</button>
       </div>
 
       <div class="admin-toolbar">
-        <span id="adminUser">OWNER MODE</span>
-        <button id="logoutBtn" class="danger-btn">LOGOUT</button>
+        <span>MODE PEMILIK</span>
+        <button id="logoutBtn" class="danger-btn">KELUAR</button>
       </div>
 
       <form id="projectForm" class="project-form">
-        <h3 id="formTitle">ADD NEW PROJECT</h3>
+
+        <h3 id="formTitle">TAMBAH PROYEK</h3>
+
         <input type="hidden" id="projectId">
 
-        <label for="projectTitle">PROJECT NAME</label>
-        <input id="projectTitle" type="text" placeholder="Project name" required>
+        <label for="projectTitle">NAMA PROYEK</label>
+        <input id="projectTitle" type="text" required>
 
-        <label for="projectDescription">DESCRIPTION</label>
-        <textarea id="projectDescription" placeholder="Project description" required></textarea>
+        <label for="projectDescription">DESKRIPSI</label>
+        <textarea id="projectDescription" required></textarea>
 
-        <label for="projectCategory">CATEGORY</label>
-        <input id="projectCategory" type="text" placeholder="Web Development">
+        <label for="projectCategory">KATEGORI</label>
+        <input id="projectCategory" type="text">
 
-        <label for="projectTech">TECH STACK</label>
-        <input id="projectTech" type="text" placeholder="HTML, CSS, JavaScript">
+        <label for="projectTech">TEKNOLOGI</label>
+        <input id="projectTech" type="text">
 
-        <label for="projectLink">PROJECT LINK</label>
-        <input id="projectLink" type="url" placeholder="https://example.com">
+        <label for="projectLink">TAUTAN PROYEK</label>
+        <input id="projectLink" type="url">
 
-        <label for="projectImage">IMAGE URL (OPTIONAL)</label>
-        <input id="projectImage" type="url" placeholder="https://...">
+        <label for="projectImage">TAUTAN GAMBAR</label>
+        <input id="projectImage" type="url">
 
         <label class="featured-check">
           <input id="projectFeatured" type="checkbox">
-          FEATURED PROJECT
+          PROYEK UNGGULAN
         </label>
 
         <div class="form-actions">
-          <button type="submit" class="primary-btn" id="saveProject">SAVE PROJECT</button>
-          <button type="button" class="secondary-btn" id="cancelEdit">RESET</button>
+          <button type="submit" class="primary-btn" id="saveProject">
+            SIMPAN PROYEK
+          </button>
+
+          <button type="button" class="secondary-btn" id="cancelEdit">
+            RESET
+          </button>
         </div>
+
         <p id="projectMessage" class="form-message"></p>
+
       </form>
 
       <div class="admin-list">
-        <h3>EXISTING PROJECTS</h3>
+        <h3>DAFTAR PROYEK</h3>
         <div id="adminProjectList"></div>
       </div>
+
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/app.js"></script>
+
 </body>
 </html>
