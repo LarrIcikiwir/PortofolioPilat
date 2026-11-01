@@ -1,39 +1,52 @@
 
-/* =================================
-   SUPABASE CONFIGURATION
-================================= */
+/* =====================================================
+   PILAR REHAN S.T. — PORTOFOLIO
+   JavaScript + Supabase
+===================================================== */
+
+
+/* =====================================================
+   01. KONFIGURASI
+===================================================== */
 
 const SUPABASE_URL = "https://mqqgleosncngwmxjjoit.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_mj6sYgtaX9gvgI5I6xCz6g_u2G9MnLH";
+
+const SUPABASE_ANON_KEY =
+  "sb_publishable_mj6sYgtaX9gvgI5I6xCz6g_u2G9MnLH";
+
 const OWNER_UID = "3be8b6b2-f81b-41e9-b2f1-3d4cba14bf41";
 
-const supabaseClient = window.supabase.createClient(
+const db = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_ANON_KEY
 );
 
-/* =================================
-   ELEMENTS
-================================= */
 
-const $ = (id) => document.getElementById(id);
+/* =====================================================
+   02. ELEMENT HTML
+===================================================== */
+
+const $ = id => document.getElementById(id);
 
 const loginModal = $("loginModal");
 const adminPanel = $("adminPanel");
+
 const loginForm = $("loginForm");
 const projectForm = $("projectForm");
+
 const projectGrid = $("projectGrid");
 const adminProjectList = $("adminProjectList");
 
-let currentUser = null;
 let projects = [];
+let currentUser = null;
 
-/* =================================
-   HELPERS
-================================= */
+
+/* =====================================================
+   03. UTILITAS
+===================================================== */
 
 function escapeHTML(value = "") {
-  return String(value).replace(/[&<>"']/g, (char) => ({
+  return String(value).replace(/[&<>"']/g, char => ({
     "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
@@ -42,423 +55,749 @@ function escapeHTML(value = "") {
   })[char]);
 }
 
+
 function safeURL(value) {
+  if (!value) return "";
+
   try {
     const url = new URL(value);
-    return ["http:", "https:"].includes(url.protocol)
-      ? url.href
-      : "";
-  } catch {
+
+    if (
+      url.protocol === "https:" ||
+      url.protocol === "http:"
+    ) {
+      return url.href;
+    }
+  } catch (error) {
     return "";
   }
+
+  return "";
 }
+
 
 function showMessage(element, message, success = false) {
+  if (!element) return;
+
   element.textContent = message;
-  element.style.color = success ? "#83c995" : "#e98b8b";
+
+  element.style.color = success
+    ? "#83c995"
+    : "#d94848";
 }
 
-function resetProjectForm() {
-  projectForm.reset();
-  $("projectId").value = "";
-  $("formTitle").textContent = "ADD NEW PROJECT";
-  $("saveProject").textContent = "SAVE PROJECT";
-  $("projectMessage").textContent = "";
+
+function setLoading(button, loading, text) {
+  if (!button) return;
+
+  button.disabled = loading;
+
+  button.textContent = loading
+    ? "MEMPROSES..."
+    : text;
 }
 
-/* =================================
-   PROJECT DISPLAY
-================================= */
 
-async function loadProjects() {
-  projectGrid.innerHTML = '<p class="loading-text">Loading projects...</p>';
+function isOwner(user) {
+  return Boolean(user && user.id === OWNER_UID);
+}
 
-  const { data, error } = await supabaseClient
-    .from("projects")
-    .select("*")
-    .order("featured", { ascending: false })
-    .order("created_at", { ascending: false });
 
-  if (error) {
-    projectGrid.innerHTML =
-      '<p class="loading-text">Unable to load projects. Check database configuration.</p>';
-    console.error(error);
+/* =====================================================
+   04. ANIMASI SCROLL
+===================================================== */
+
+function initReveal() {
+  const elements = document.querySelectorAll(".reveal");
+
+  if (!("IntersectionObserver" in window)) {
+    elements.forEach(element => {
+      element.classList.add("show");
+    });
+
     return;
   }
 
-  projects = data || [];
-  renderProjects();
-  renderAdminProjects();
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("show");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: "0px 0px -40px 0px"
+  });
+
+  elements.forEach(element => {
+    observer.observe(element);
+  });
 }
 
+
+/* =====================================================
+   05. PEMERIKSAAN GAMBAR
+===================================================== */
+
+function initImages() {
+  document.querySelectorAll(".image-box img").forEach(img => {
+    const wrapper = img.parentElement;
+
+    function imageFailed() {
+      wrapper.classList.add("image-missing");
+    }
+
+    img.addEventListener("error", imageFailed);
+
+    if (img.complete && img.naturalWidth === 0) {
+      imageFailed();
+    }
+  });
+}
+
+
+/* =====================================================
+   06. PAGE LOADER
+===================================================== */
+
+window.addEventListener("load", () => {
+  const loader = $("pageLoader");
+
+  if (loader) {
+    loader.classList.add("done");
+  }
+});
+
+
+/* =====================================================
+   07. NAVIGASI MOBILE
+===================================================== */
+
+const menuBtn = $("menuBtn");
+const navMenu = $("navMenu");
+
+if (menuBtn && navMenu) {
+  menuBtn.addEventListener("click", () => {
+    navMenu.classList.toggle("active");
+  });
+
+  navMenu.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+      navMenu.classList.remove("active");
+    });
+  });
+}
+
+
+/* =====================================================
+   08. MODAL
+===================================================== */
+
+function openModal(element) {
+  if (!element) return;
+
+  element.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+
+function closeModal(element) {
+  if (!element) return;
+
+  element.classList.remove("active");
+
+  const anotherModal = document.querySelector(
+    ".modal-backdrop.active, .admin-backdrop.active"
+  );
+
+  if (!anotherModal) {
+    document.body.style.overflow = "";
+  }
+}
+
+
+if ($("closeLogin")) {
+  $("closeLogin").addEventListener("click", () => {
+    closeModal(loginModal);
+  });
+}
+
+
+if ($("closeAdmin")) {
+  $("closeAdmin").addEventListener("click", () => {
+    closeModal(adminPanel);
+  });
+}
+
+
+if (loginModal) {
+  loginModal.addEventListener("click", event => {
+    if (event.target === loginModal) {
+      closeModal(loginModal);
+    }
+  });
+}
+
+
+if (adminPanel) {
+  adminPanel.addEventListener("click", event => {
+    if (event.target === adminPanel) {
+      closeModal(adminPanel);
+    }
+  });
+}
+
+
+/* =====================================================
+   09. TOMBOL AKSES PEMILIK
+===================================================== */
+
+if ($("ownerBtn")) {
+  $("ownerBtn").addEventListener("click", async () => {
+    const { data, error } = await db.auth.getUser();
+
+    if (error) {
+      console.error(error);
+    }
+
+    const user = data?.user;
+
+    if (isOwner(user)) {
+      openModal(adminPanel);
+      await loadProjects();
+    } else {
+      openModal(loginModal);
+    }
+  });
+}
+
+
+/* =====================================================
+   10. LOGIN PEMILIK
+===================================================== */
+
+if (loginForm) {
+  loginForm.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const button = loginForm.querySelector(
+      'button[type="submit"]'
+    );
+
+    const originalText = "MASUK ↗";
+
+    const email = $("loginEmail").value.trim();
+    const password = $("loginPassword").value;
+
+    showMessage($("loginMessage"), "");
+
+    setLoading(button, true, originalText);
+
+    try {
+      const { data, error } = await db.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (!isOwner(data.user)) {
+        await db.auth.signOut();
+
+        throw new Error(
+          "Akun ini tidak memiliki akses pemilik."
+        );
+      }
+
+      currentUser = data.user;
+
+      loginForm.reset();
+
+      closeModal(loginModal);
+      openModal(adminPanel);
+
+      await loadProjects();
+
+    } catch (error) {
+      showMessage(
+        $("loginMessage"),
+        error.message
+      );
+
+    } finally {
+      setLoading(button, false, originalText);
+    }
+  });
+}
+
+
+/* =====================================================
+   11. MENGAMBIL DATA PROYEK
+===================================================== */
+
+async function loadProjects() {
+  if (!projectGrid) return;
+
+  projectGrid.innerHTML = `
+    <p class="loading-text">
+      MEMUAT PROYEK...
+    </p>
+  `;
+
+  try {
+    const { data, error } = await db
+      .from("projects")
+      .select("*")
+      .order("created_at", {
+        ascending: false
+      });
+
+    if (error) {
+      throw error;
+    }
+
+    projects = data || [];
+
+    renderProjects();
+    renderAdminProjects();
+
+  } catch (error) {
+    console.error("Gagal mengambil proyek:", error);
+
+    projectGrid.innerHTML = `
+      <p class="loading-text">
+        GAGAL MEMUAT PROYEK. PERIKSA KONEKSI DATABASE.
+      </p>
+    `;
+  }
+}
+
+
+/* =====================================================
+   12. MENAMPILKAN PROYEK
+===================================================== */
+
 function renderProjects() {
-  if (!projects.length) {
-    projectGrid.innerHTML =
-      '<p class="loading-text">No projects published yet.</p>';
+  if (!projectGrid) return;
+
+  if (projects.length === 0) {
+    projectGrid.innerHTML = `
+      <p class="loading-text">
+        BELUM ADA PROYEK YANG DITAMPILKAN.
+      </p>
+    `;
+
     return;
   }
 
   projectGrid.innerHTML = projects.map((project, index) => {
     const link = safeURL(project.link);
-    const title = escapeHTML(project.title);
-    const description = escapeHTML(project.description);
-    const category = escapeHTML(project.category);
-    const tech = escapeHTML(project.tech);
 
     return `
-      <article class="project-card">
+      <article class="project-card reveal show">
+
         <div>
           <div class="project-top">
-            <span>${String(index + 1).padStart(2, "0")} / PROJECT</span>
-            <span>${category}</span>
+            <span>
+              ${String(index + 1).padStart(2, "0")}
+              / ${escapeHTML(project.category)}
+            </span>
+
+            <span>
+              ${project.featured ? "FEATURED" : "PROJECT"}
+            </span>
           </div>
 
-          <h3>${title}</h3>
-          <p>${description}</p>
-          <div class="project-tech">${tech}</div>
+          <h3>
+            ${escapeHTML(project.title)}
+          </h3>
+
+          <p>
+            ${escapeHTML(project.description)}
+          </p>
+
+          <div class="project-tech">
+            ${escapeHTML(project.tech || "PROYEK DIGITAL")}
+          </div>
         </div>
 
         <div class="project-bottom">
+
           <span class="project-featured">
-            ${project.featured ? "★ FEATURED" : "PERSONAL PROJECT"}
+            ${project.featured
+              ? "★ PROYEK UNGGULAN"
+              : "ARSIP PROYEK"}
           </span>
 
           ${
             link
-              ? `<a href="${escapeHTML(link)}" target="_blank" rel="noopener noreferrer">VIEW PROJECT ↗</a>`
-              : `<span class="mono">IN DEVELOPMENT</span>`
+              ? `
+                <a
+                  href="${escapeHTML(link)}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  BUKA PROYEK ↗
+                </a>
+              `
+              : `
+                <span class="mono">
+                  BELUM ADA TAUTAN
+                </span>
+              `
           }
+
         </div>
+
       </article>
     `;
   }).join("");
 }
 
-/* =================================
-   AUTHENTICATION
-================================= */
 
-async function getSession() {
-  const { data, error } = await supabaseClient.auth.getSession();
-
-  if (error) {
-    console.error(error);
-    return null;
-  }
-
-  return data.session;
-}
-
-async function openOwnerAccess() {
-  const session = await getSession();
-
-  if (!session) {
-    loginModal.classList.add("show");
-    return;
-  }
-
-  if (session.user.id !== OWNER_UID) {
-    await supabaseClient.auth.signOut();
-    loginModal.classList.add("show");
-    return;
-  }
-
-  currentUser = session.user;
-  openAdmin();
-}
-
-loginForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-
-  const email = $("loginEmail").value.trim();
-  const password = $("loginPassword").value;
-
-  const message = $("loginMessage");
-  const submitButton = loginForm.querySelector("button[type='submit']");
-
-  submitButton.disabled = true;
-  submitButton.textContent = "AUTHENTICATING...";
-
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  submitButton.disabled = false;
-  submitButton.textContent = "SIGN IN ↗";
-
-  if (error) {
-    showMessage(message, "Login gagal. Periksa email dan password.");
-    return;
-  }
-
-  if (data.user.id !== OWNER_UID) {
-    await supabaseClient.auth.signOut();
-    showMessage(message, "Akun ini tidak memiliki akses owner.");
-    return;
-  }
-
-  currentUser = data.user;
-  message.textContent = "";
-  loginForm.reset();
-  loginModal.classList.remove("show");
-  openAdmin();
-});
-
-function openAdmin() {
-  $("adminUser").textContent =
-    currentUser?.email || "OWNER MODE";
-
-  adminPanel.classList.add("show");
-  loadProjects();
-}
-
-async function logout() {
-  const { error } = await supabaseClient.auth.signOut();
-
-  if (error) {
-    alert("Logout gagal: " + error.message);
-    return;
-  }
-
-  currentUser = null;
-  adminPanel.classList.remove("show");
-  loginModal.classList.remove("show");
-}
-
-/* =================================
-   CREATE / UPDATE PROJECT
-================================= */
-
-projectForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-
-  if (!currentUser || currentUser.id !== OWNER_UID) {
-    showMessage($("projectMessage"), "Unauthorized.");
-    return;
-  }
-
-  const id = $("projectId").value;
-
-  const payload = {
-    title: $("projectTitle").value.trim(),
-    description: $("projectDescription").value.trim(),
-    category: $("projectCategory").value.trim() || "Web Development",
-    tech: $("projectTech").value.trim(),
-    link: safeURL($("projectLink").value.trim()) || null,
-    image: safeURL($("projectImage").value.trim()) || null,
-    featured: $("projectFeatured").checked,
-    updated_at: new Date().toISOString()
-  };
-
-  if (!payload.title || !payload.description) {
-    showMessage($("projectMessage"), "Nama dan deskripsi wajib diisi.");
-    return;
-  }
-
-  const saveButton = $("saveProject");
-  saveButton.disabled = true;
-  saveButton.textContent = "SAVING...";
-
-  let result;
-
-  if (id) {
-    result = await supabaseClient
-      .from("projects")
-      .update(payload)
-      .eq("id", id)
-      .select();
-  } else {
-    result = await supabaseClient
-      .from("projects")
-      .insert(payload)
-      .select();
-  }
-
-  saveButton.disabled = false;
-  saveButton.textContent = id ? "UPDATE PROJECT" : "SAVE PROJECT";
-
-  if (result.error) {
-    showMessage($("projectMessage"), result.error.message);
-    return;
-  }
-
-  showMessage(
-    $("projectMessage"),
-    id ? "Project berhasil diperbarui." : "Project berhasil ditambahkan.",
-    true
-  );
-
-  resetProjectForm();
-  await loadProjects();
-});
-
-/* =================================
-   EDIT PROJECT
-================================= */
-
-function editProject(id) {
-  if (!currentUser || currentUser.id !== OWNER_UID) return;
-
-  const project = projects.find(item => String(item.id) === String(id));
-
-  if (!project) return;
-
-  $("projectId").value = project.id;
-  $("projectTitle").value = project.title || "";
-  $("projectDescription").value = project.description || "";
-  $("projectCategory").value = project.category || "";
-  $("projectTech").value = project.tech || "";
-  $("projectLink").value = project.link || "";
-  $("projectImage").value = project.image || "";
-  $("projectFeatured").checked = Boolean(project.featured);
-
-  $("formTitle").textContent = "EDIT PROJECT";
-  $("saveProject").textContent = "UPDATE PROJECT";
-
-  $("projectForm").scrollIntoView({
-    behavior: "smooth",
-    block: "start"
-  });
-}
-
-/* =================================
-   DELETE PROJECT
-================================= */
-
-async function deleteProject(id) {
-  if (!currentUser || currentUser.id !== OWNER_UID) return;
-
-  const confirmed = confirm(
-    "Yakin ingin menghapus project ini?"
-  );
-
-  if (!confirmed) return;
-
-  const { error } = await supabaseClient
-    .from("projects")
-    .delete()
-    .eq("id", id);
-
-  if (error) {
-    alert("Gagal menghapus: " + error.message);
-    return;
-  }
-
-  await loadProjects();
-}
-
-/* =================================
-   ADMIN PROJECT LIST
-================================= */
+/* =====================================================
+   13. DAFTAR PROYEK ADMIN
+===================================================== */
 
 function renderAdminProjects() {
-  if (!currentUser || currentUser.id !== OWNER_UID) {
-    adminProjectList.innerHTML = "";
-    return;
-  }
+  if (!adminProjectList) return;
 
-  if (!projects.length) {
-    adminProjectList.innerHTML =
-      '<p class="loading-text">Belum ada project.</p>';
+  if (projects.length === 0) {
+    adminProjectList.innerHTML = `
+      <p class="loading-text">
+        BELUM ADA PROYEK.
+      </p>
+    `;
+
     return;
   }
 
   adminProjectList.innerHTML = projects.map(project => `
     <div class="admin-project">
+
       <div>
-        <h4>${escapeHTML(project.title)}</h4>
-        <small>${escapeHTML(project.category)}</small>
+        <strong>
+          ${escapeHTML(project.title)}
+        </strong>
+
+        <p>
+          ${escapeHTML(project.category)}
+        </p>
       </div>
 
-      <div class="admin-actions">
-        <button type="button" data-edit="${project.id}">EDIT</button>
-        <button type="button" class="delete-btn" data-delete="${project.id}">
-          DELETE
+      <div class="admin-project-actions">
+
+        <button
+          type="button"
+          data-edit="${project.id}"
+        >
+          UBAH
         </button>
+
+        <button
+          type="button"
+          data-delete="${project.id}"
+        >
+          HAPUS
+        </button>
+
       </div>
+
     </div>
   `).join("");
 }
 
-adminProjectList.addEventListener("click", (event) => {
-  const editButton = event.target.closest("[data-edit]");
-  const deleteButton = event.target.closest("[data-delete]");
 
-  if (editButton) {
-    editProject(editButton.dataset.edit);
-  }
+/* =====================================================
+   14. RESET FORM PROYEK
+===================================================== */
 
-  if (deleteButton) {
-    deleteProject(deleteButton.dataset.delete);
-  }
-});
+function resetProjectForm() {
+  if (!projectForm) return;
 
-/* =================================
-   UI EVENTS
-================================= */
+  projectForm.reset();
 
-$("ownerBtn").addEventListener("click", openOwnerAccess);
+  $("projectId").value = "";
 
-$("closeLogin").addEventListener("click", () => {
-  loginModal.classList.remove("show");
-});
+  $("formTitle").textContent = "TAMBAH PROYEK";
 
-$("closeAdmin").addEventListener("click", () => {
-  adminPanel.classList.remove("show");
-});
+  $("saveProject").textContent = "SIMPAN PROYEK";
 
-$("logoutBtn").addEventListener("click", logout);
+  showMessage($("projectMessage"), "");
+}
 
-$("cancelEdit").addEventListener("click", resetProjectForm);
 
-$("menuBtn").addEventListener("click", () => {
-  $("navMenu").classList.toggle("open");
-});
+if ($("cancelEdit")) {
+  $("cancelEdit").addEventListener("click", resetProjectForm);
+}
 
-document.querySelectorAll("#navMenu a").forEach(link => {
-  link.addEventListener("click", () => {
-    $("navMenu").classList.remove("open");
-  });
-});
 
-loginModal.addEventListener("click", (event) => {
-  if (event.target === loginModal) {
-    loginModal.classList.remove("show");
-  }
-});
+/* =====================================================
+   15. MENYIMPAN PROYEK
+===================================================== */
 
-adminPanel.addEventListener("click", (event) => {
-  if (event.target === adminPanel) {
-    adminPanel.classList.remove("show");
-  }
-});
+if (projectForm) {
+  projectForm.addEventListener("submit", async event => {
+    event.preventDefault();
 
-/* =================================
-   AUTH STATE
-================================= */
+    const button = $("saveProject");
+    const editingId = $("projectId").value;
 
-supabaseClient.auth.onAuthStateChange((event, session) => {
-  if (!session) {
-    currentUser = null;
-    adminPanel.classList.remove("show");
-    return;
-  }
+    const originalText = editingId
+      ? "SIMPAN PERUBAHAN"
+      : "SIMPAN PROYEK";
 
-  if (session.user.id === OWNER_UID) {
-    currentUser = session.user;
-  } else {
-    currentUser = null;
-    adminPanel.classList.remove("show");
+    const payload = {
+      title: $("projectTitle").value.trim(),
 
-    if (event === "SIGNED_IN") {
-      supabaseClient.auth.signOut();
+      description: $("projectDescription").value.trim(),
+
+      category:
+        $("projectCategory").value.trim() ||
+        "Pengembangan Web",
+
+      tech: $("projectTech").value.trim(),
+
+      link: safeURL($("projectLink").value),
+
+      image: safeURL($("projectImage").value),
+
+      featured: $("projectFeatured").checked,
+
+      updated_at: new Date().toISOString()
+    };
+
+    showMessage($("projectMessage"), "");
+
+    if (!payload.title || !payload.description) {
+      showMessage(
+        $("projectMessage"),
+        "Nama dan deskripsi proyek wajib diisi."
+      );
+
+      return;
     }
+
+    setLoading(button, true, originalText);
+
+    try {
+      const { data: { user }, error: authError } =
+        await db.auth.getUser();
+
+      if (authError) throw authError;
+
+      if (!isOwner(user)) {
+        throw new Error(
+          "Sesi pemilik tidak valid. Silakan login kembali."
+        );
+      }
+
+      let result;
+
+      if (editingId) {
+        result = await db
+          .from("projects")
+          .update(payload)
+          .eq("id", editingId);
+
+      } else {
+        result = await db
+          .from("projects")
+          .insert(payload);
+      }
+
+      if (result.error) {
+        throw result.error;
+      }
+
+      showMessage(
+        $("projectMessage"),
+        editingId
+          ? "PROYEK BERHASIL DIPERBARUI."
+          : "PROYEK BERHASIL DITAMBAHKAN.",
+        true
+      );
+
+      resetProjectForm();
+
+      await loadProjects();
+
+    } catch (error) {
+      console.error(error);
+
+      showMessage(
+        $("projectMessage"),
+        error.message
+      );
+
+    } finally {
+      button.disabled = false;
+      button.textContent = "SIMPAN PROYEK";
+    }
+  });
+}
+
+
+/* =====================================================
+   16. EDIT DAN HAPUS PROYEK
+===================================================== */
+
+if (adminProjectList) {
+  adminProjectList.addEventListener("click", async event => {
+
+    const editId = event.target.dataset.edit;
+    const deleteId = event.target.dataset.delete;
+
+    /* EDIT */
+
+    if (editId) {
+      const project = projects.find(
+        item => String(item.id) === editId
+      );
+
+      if (!project) return;
+
+      $("projectId").value = project.id;
+
+      $("projectTitle").value = project.title || "";
+
+      $("projectDescription").value =
+        project.description || "";
+
+      $("projectCategory").value =
+        project.category || "";
+
+      $("projectTech").value =
+        project.tech || "";
+
+      $("projectLink").value =
+        project.link || "";
+
+      $("projectImage").value =
+        project.image || "";
+
+      $("projectFeatured").checked =
+        Boolean(project.featured);
+
+      $("formTitle").textContent = "UBAH PROYEK";
+
+      $("saveProject").textContent = "SIMPAN PERUBAHAN";
+
+      $("projectForm").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
+
+    /* HAPUS */
+
+    if (deleteId) {
+      const project = projects.find(
+        item => String(item.id) === deleteId
+      );
+
+      if (!project) return;
+
+      const confirmed = confirm(
+        `Yakin ingin menghapus "${project.title}"?`
+      );
+
+      if (!confirmed) return;
+
+      try {
+        const { data: { user }, error: authError } =
+          await db.auth.getUser();
+
+        if (authError) throw authError;
+
+        if (!isOwner(user)) {
+          throw new Error("Akses ditolak.");
+        }
+
+        const { error } = await db
+          .from("projects")
+          .delete()
+          .eq("id", deleteId);
+
+        if (error) throw error;
+
+        await loadProjects();
+
+        resetProjectForm();
+
+      } catch (error) {
+        alert("Gagal menghapus proyek: " + error.message);
+      }
+    }
+
+  });
+}
+
+
+/* =====================================================
+   17. LOGOUT
+===================================================== */
+
+if ($("logoutBtn")) {
+  $("logoutBtn").addEventListener("click", async () => {
+    const confirmed = confirm(
+      "Yakin ingin keluar dari panel pemilik?"
+    );
+
+    if (!confirmed) return;
+
+    const { error } = await db.auth.signOut();
+
+    if (error) {
+      alert(error.message);
+      return;
+    }
+
+    currentUser = null;
+
+    closeModal(adminPanel);
+
+    resetProjectForm();
+
+    renderAdminProjects();
+  });
+}
+
+
+/* =====================================================
+   18. PEMERIKSAAN SESSION
+===================================================== */
+
+db.auth.onAuthStateChange((event, session) => {
+  const user = session?.user || null;
+
+  currentUser = isOwner(user) ? user : null;
+
+  if (user && !isOwner(user)) {
+    db.auth.signOut();
   }
 });
 
-/* =================================
-   INITIALIZE
-================================= */
 
-loadProjects();
+/* =====================================================
+   19. INISIALISASI
+===================================================== */
+
+async function initApp() {
+  initReveal();
+  initImages();
+
+  const { data, error } = await db.auth.getUser();
+
+  if (!error && isOwner(data.user)) {
+    currentUser = data.user;
+  }
+
+  await loadProjects();
+}
+
+initApp();
